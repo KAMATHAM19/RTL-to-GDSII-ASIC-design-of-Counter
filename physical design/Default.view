@@ -1,0 +1,11 @@
+# Version:1.0 MMMC View Definition File
+# Do Not Remove Above Line
+create_rc_corner -name RC_CORNERS -cap_table {/cad/FOUNDRY/digital/90nm/dig/captable/gpdk090.lef.extended.CapTbl} -preRoute_res {1.0} -preRoute_cap {1.0} -preRoute_clkres {0.0} -preRoute_clkcap {0.0} -postRoute_res {1.0} -postRoute_cap {1.0} -postRoute_xcap {1.0} -postRoute_clkres {0.0} -postRoute_clkcap {0.0} -qx_tech_file {/cad/FOUNDRY/digital/90nm/dig/qrc/gpdk090_9l.tch}
+create_library_set -name SLOW -timing {/cad/FOUNDRY/digital/90nm/dig/lib/slow.lib}
+create_library_set -name FAST -timing {/cad/FOUNDRY/digital/90nm/dig/lib/slow.lib /cad/FOUNDRY/digital/90nm/dig/lib/fast.lib}
+create_constraint_mode -name CONSTRAINTS -sdc_files {counter_tool.sdc}
+create_delay_corner -name MAXDELAY -library_set {SLOW} -rc_corner {RC_CORNERS}
+create_delay_corner -name MINDELAY -library_set {FAST} -rc_corner {RC_CORNERS}
+create_analysis_view -name BESTCASE -constraint_mode {CONSTRAINTS} -delay_corner {MINDELAY}
+create_analysis_view -name WORSTCASE -constraint_mode {CONSTRAINTS} -delay_corner {MAXDELAY}
+set_analysis_view -setup {BESTCASE} -hold {WORSTCASE}
